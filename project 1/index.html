@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Website</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        html,body{
+        display: grid;
+        height: 100%;
+        width: 100%;
+        place-items: center;
+        /* Updated gradient with color stops */
+        background: linear-gradient(to bottom right, #89745d, #735a3e, #554528, #4c3c15);
+    }
+        .background-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .background-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5; /* Adjust opacity for semi-transparency */
+        }
+        .wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+            max-width: 390px;
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.1);
+        }
+        .wrapper .title-text {
+            display: flex;
+            width: 200%;
+        }
+        .wrapper .title {
+            width: 50%;
+            font-size: 35px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .wrapper .slide-controls {
+            position: relative;
+            display: flex;
+            height: 50px;
+            width: 100%;
+            overflow: hidden;
+            margin: 30px 0 10px 0;
+            justify-content: space-between;
+            border: 1px solid lightgrey;
+            border-radius: 15px;
+        }
+        .slide-controls .slide {
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 48px;
+            cursor: pointer;
+            z-index: 1;
+            transition: all 0.6s ease;
+        }
+        .slide-controls label.signup {
+            color: #000;
+        }
+        .slide-controls .slider-tab {
+            position: absolute;
+            height: 100%;
+            width: 50%;
+            left: 0;
+            z-index: 0;
+            border-radius: 15px;
+            background: -webkit-linear-gradient(left, #89745d, #735a3e, #554528, #4c3c15);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        input[type="radio"] {
+            display: none;
+        }
+        #signup:checked ~ .slider-tab {
+            left: 50%;
+        }
+        #signup:checked ~ label.signup {
+            color: #fff;
+            cursor: default;
+            user-select: none;
+        }
+        #signup:checked ~ label.login {
+            color: #000;
+        }
+        #login:checked ~ label.signup {
+            color: #000;
+        }
+        #login:checked ~ label.login {
+            cursor: default;
+            user-select: none;
+        }
+        .wrapper .form-container {
+            width: 100%;
+            overflow: hidden;
+        }
+        .form-container .form-inner {
+            display: flex;
+            width: 200%;
+        }
+        .form-container .form-inner form {
+            width: 50%;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .form-inner form .field {
+            height: 50px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .form-inner form .field input {
+            height: 100%;
+            width: 100%;
+            outline: none;
+            padding-left: 15px;
+            border-radius: 15px;
+            border: 1px solid lightgrey;
+            border-bottom-width: 2px;
+            font-size: 17px;
+            transition: all 0.3s ease;
+        }
+        .form-inner form .field input:focus {
+            border-color: #695b37;
+        }
+        .form-inner form .field input::placeholder {
+            color: #999;
+            transition: all 0.3s ease;
+        }
+        form .field input:focus::placeholder {
+            color:#695b37;
+        }
+        .form-inner form .pass-link {
+            margin-top: 5px;
+        }
+        .form-inner form .signup-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .form-inner form .pass-link a,
+        .form-inner form .signup-link a {
+            color: #BFAA76;
+            text-decoration: none;
+        }
+        .form-inner form .pass-link a:hover,
+        .form-inner form .signup-link a:hover {
+            text-decoration: underline;
+        }
+        form .btn {
+            height: 50px;
+            width: 100%;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        form .btn .btn-layer {
+            height: 100%;
+            width: 300%;
+            position: absolute;
+            left: -100%;
+            background: -webkit-linear-gradient(right,#89745d, #735a3e, #554528, #4c3c15);
+            border-radius: 15px;
+            transition: all 0.4s ease;;
+        }
+        form .btn:hover .btn-layer {
+            left: 0;
+        }
+        form .btn input[type="submit"] {
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+            position: relative;
+            background: none;
+            border: none;
+            color: #fff;
+            padding-left: 0;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* New CSS for error messages */
+        .error-message {
+            color: rgb(20, 18, 18);
+            font-size: 14px;
+            margin-top: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-container">
+        <img src="aesthetic beige wallpaper.jpg" alt="Background Image">
+       
+        <div class="wrapper">
+            <div class="title-text">
+                <div class="title login">Login </div>
+                <div class="title signup">Signup </div>
+            </div>
+            <div class="form-container">
+                <div class="slide-controls">
+                    <input type="radio" name="slide" id="login" checked>
+                    <input type="radio" name="slide" id="signup">
+                    <label for="login" class="slide login">Login</label>
+                    <label for="signup" class="slide signup">Signup</label>
+                    <div class="slider-tab"></div>
+                </div>
+                <div class="form-inner">
+                    <form action="#" class="login">
+                        <div class="field">
+                            <input type="text" id="loginEmail" placeholder="Email Address" required>
+                            <span class="error-message" id="loginEmailError"></span>
+                        </div>
+                        <div class="field">
+                            <input type="password" id="loginPassword" placeholder="Password" required>
+                            <span class="error-message" id="loginPasswordError"></span>
+                        </div>
+                        <div class="pass-link"><a href="#">Forgot password?</a></div>
+                        <div class="field btn">
+                            <div class="btn-layer"></div>
+                            <input type="submit" value="Login">
+                        </div>
+                        <div class="signup-link">Not a member? <a href="">Signup now</a></div>
+                    </form>
+                    <form action="#" class="signup">
+                        <div class="field">
+                            <input type="text" id="signupEmail" placeholder="Email Address" required>
+                            <span class="error-message" id="signupEmailError"></span>
+                        </div>
+                        <div class="field">
+                            <input type="password" id="signupPassword" placeholder="Password" required>
+                            <span class="error-message" id="signupPasswordError"></span>
+                        </div>
+                        <div class="field">
+                            <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                            <span class="error-message" id="confirmPasswordError"></span>
+                        </div>
+                        <div class="field btn">
+                            <div class="btn-layer"></div>
+                            <input type="submit" value="Signup">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Function to validate email
+        const validateEmail = (email) => {
+            const regex = /\S+@\S+\.\S+/;
+            return regex.test(email);
+        };
+
+        // Function to validate password
+        const validatePassword = (password) => {
+            return password.length >= 6; // Password should be at least 6 characters long
+        };
+
+        // Function to validate confirm password
+        const validateConfirmPassword = (confirmPassword, password) => {
+            return confirmPassword === password;
+        };
+
+        document.querySelector('form.login').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const loginEmail = document.getElementById('loginEmail').value;
+            const loginPassword = document.getElementById('loginPassword').value;
+            let isValid = true;
+
+            if (!validateEmail(loginEmail)) {
+                document.getElementById('loginEmailError').innerText = 'Please enter a valid email';
+                isValid = false;
+            } else {
+                document.getElementById('loginEmailError').innerText = '';
+            }
+
+            if (!validatePassword(loginPassword)) {
+                document.getElementById('loginPasswordError').innerText = 'Password must be at least 6 characters long';
+                isValid = false;
+            } else {
+                document.getElementById('loginPasswordError').innerText = '';
+            }
+
+            if (isValid) {
+                // Submit the form
+                document.querySelector('form.login').submit();
+            }
+        });
+
+        document.querySelector('form.signup').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const signupEmail = document.getElementById('signupEmail').value;
+            const signupPassword = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            let isValid = true;
+
+            if (!validateEmail(signupEmail)) {
+                document.getElementById('signupEmailError').innerText = 'Please enter a valid email';
+                isValid = false;
+            } else {
+                document.getElementById('signupEmailError').innerText = '';
+            }
+
+            if (!validatePassword(signupPassword)) {
+                document.getElementById('signupPasswordError').innerText = 'Password must be at least 6 characters long';
+                isValid = false;
+            } else {
+                document.getElementById('signupPasswordError').innerText = '';
+            }
+
+            if (!validateConfirmPassword(confirmPassword, signupPassword)) {
+                document.getElementById('confirmPasswordError').innerText = 'Passwords do not match';
+                isValid = false;
+            } else {
+                document.getElementById('confirmPasswordError').innerText = '';
+            }
+
+            if (isValid) {
+                // Submit the form
+                document.querySelector('form.signup').submit();
+            }
+        });
+    </script>
+</body>
+</html>
+
